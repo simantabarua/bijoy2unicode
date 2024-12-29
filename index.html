@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bijoy to Unicode Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <section class="main">
+        <h2 class="page-title">Bijoy to Unicode Converter</h2>
+        <form action="">
+            <div class="classic-box">
+                <p class="box-name">Bijoy Classic</p>
+                <div id="ClassicBar">
+                    <div class="copy" id="copy1">Copy</div>
+                    <input type="reset" value="&times;" onclick="$('.highlights').html('');">
+                </div>
+                <div class="classic-text-box">
+                    <div class="highlights" id="Classic2"></div>
+                    <textarea name="Classic" id="01" cols="30" rows="10" spellcheck="false"></textarea>
+                </div>
+            </div>
+            <div class="unicode-box">
+                <p class="box-name">Bijoy Unicode</p>
+                <div id="UnicodeBar">
+                    <div class="copy" id="copy2">Copy</div>
+                    <input type="reset" value="&times;" onclick="$('.highlights').html('');">
+                </div>
+                <textarea name="Unicode" id="02" cols="30" rows="10" value=""></textarea>
+            </div>
+        </form>
+
+    </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" defer></script>
+    <script src="script.js" defer></script>
+    <script src="corr.js" defer></script>
+    <link rel="stylesheet" href="media.css">
+    <script defer>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+
+    </script>
+</body>
+
+</html>
