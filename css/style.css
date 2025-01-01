@@ -30,11 +30,11 @@ a,a:active{
 }
 @font-face{
     font-family:sutonny;
-    src:url('sutonny.ttf')
+    src:url('../fonts/Sutonny.ttf')
 }
 @font-face{
     font-family:sutonnyOmj;
-    src:url('SutonnyOmj')
+    src:url('../fonts/SutonnyOmj.ttf')
 }
 *,::after,::before{
     margin:0;

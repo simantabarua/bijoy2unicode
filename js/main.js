@@ -1,3 +1,76 @@
+let dics;
+// fetch("http://localhost:3000/0")
+fetch("../data/data.json")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json(); // parse the response as JSON
+  })
+  .then((data) => {
+    dics = data;
+    console.log("dics", dics);
+  })
+  .catch((error) => {
+    console.error("Error fetching data:", error); // Error handling
+  });
+
+var $highlights = $(".highlights"),
+  $textarea = $('[name="Classic"]');
+let marked = [],
+  english = [];
+var ua = window.navigator.userAgent.toLowerCase(),
+  isIE = !!ua.match(/msie|trident\/7|edge/);
+function applyHighlights(e) {
+  for (ctx of ((e = e.replace(/(?<!\n)\n$/g, "\n\n")), marked))
+    e = e.replace(
+      new RegExp(ctx + "(?= )", "g"),
+      '<span class="myhighlight">' + ctx + "</span>"
+    );
+  for (eng of english)
+    e = e.replace(new RegExp(eng, "g"), '<span class="eng">' + eng + "</span>");
+  return isIE && (e = e.replace(/ /g, " <wbr>")), e;
+}
+function handleInput() {
+  var e = applyHighlights($textarea.val());
+  $highlights.html(e),
+    ($textarea[0].style.height = "100%"),
+    $highlights.height($textarea[0].scrollHeight + "px"),
+    ($textarea[0].style.height = $textarea[0].scrollHeight + "px");
+}
+function handleResize() {
+  $highlights.width($textarea.width()).height($textarea.height());
+}
+function bindEvents() {
+  $textarea.each(function () {
+    this.setAttribute(
+      "style",
+      "height:" + this.scrollHeight + "px;overflow-y:hidden;"
+    ),
+      $highlights.height(this.scrollHeight + "px");
+  }),
+    $(window).on({ resize: handleResize });
+}
+function last_word() {
+  for (value = $textarea.val(), length = value.length, i = 2; i <= length; i++)
+    if (" " == value[length - i] || "\n" == value[length - i])
+      return value.substr(length - i + 1, length);
+  return value;
+}
+function spell_check(e) {
+  var t = dics;
+  for (i = 0; i < e.length; i++) {
+    if (!(e[i] in t)) return !1;
+    t = t[e[i]];
+  }
+  return !0;
+}
+function mark_error(e) {
+  (is_correct = spell_check(e)),
+    is_correct ||
+      (marked.includes(e) || marked.push(e), setTimeout(handleInput, 200));
+}
+bindEvents(), handleResize();
 (String.prototype.replaceAt = function (e, t) {
   return this.substring(0, e) + t + this.substring(e + 1, this.length);
 }),
@@ -13,13 +86,40 @@
       "string" == typeof t ? t.replace(/\$/g, "$$$$") : t
     );
   }),
-  fetch("./key.json")
+  // fetch("http://localhost:3000/1")
+  fetch("../data/data.json")
     .then((e) => e.json())
     .then((e) => {
-      asyncCall(e);
+      asyncCall(e[0]);
+      console.log("key", e[0]);
     });
+
+// fetch("http://localhost:3000/1")
+// .then((response) => {
+//   if (!response.ok) {
+//     throw new Error(`HTTP error! Status: ${response.status}`);
+//   }
+//   // Check if the response body exists and has content
+//   return response.text();
+// })
+// .then((text) => {
+//   if (text) {
+//     // Parse the JSON only if text is not empty
+//     return JSON.parse(text);
+//   } else {
+//     throw new Error("Empty response body");
+//   }
+// })
+// .then((data) => {
+//   asyncCall(data[0]);
+//   console.log(data[0]);
+// })
+// .catch((error) => {
+//   console.error("Error fetching data:", error);
+// });
 var timer = "";
 function asyncCall(e) {
+  console.log(e);
   const t = $('[name="Unicode"]'),
     n = $('[name="Classic"]'),
     a = $(".highlights");
