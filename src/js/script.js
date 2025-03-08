@@ -481,24 +481,30 @@ function asyncCall(e) {
       clearTimeout(timer), (timer = setTimeout(c, 500));
     }),
     $("#copy1").click(() => {
-      var e = $("#Classic2");
-      "none" == getComputedStyle(e[0]).display
-        ? copyClassic(n.val())
-        : copyClassic(e.html()),
-        n.focus(),
-        $("#copy1").text("Copied!"),
+      // Get the classic text area content
+      const classicText = $("#01").val();
+
+      // Copy the text to clipboard
+      navigator.clipboard.writeText(classicText).then(() => {
+        $("#copy1").text("Copied!");
         setTimeout(() => {
           $("#copy1").text("Copy");
-        }, 1e3);
-    }),
-    $("#copy2").click(() => {
-      navigator.clipboard.writeText(t.val()),
-        t.focus(),
-        $("#copy2").text("Copied!"),
-        setTimeout(() => {
-          $("#copy2").text("Copy");
-        }, 1e3);
+        }, 1000);
+      });
     });
+
+  $("#copy2").click(() => {
+    // Get the unicode text area content
+    const unicodeText = $("#02").val();
+
+    // Copy the text to clipboard
+    navigator.clipboard.writeText(unicodeText).then(() => {
+      $("#copy2").text("Copied!");
+      setTimeout(() => {
+        $("#copy2").text("Copy");
+      }, 1000);
+    });
+  });
 }
 function transform(e = !1, t = !1, l) {
   var n = e ? "keycode" : "nrml_txt";
