@@ -20,46 +20,7 @@
     });
 var timer = "";
 function asyncCall(e) {
-  const unicodeTextarea = $('[name="Unicode"]');
-  const classicTextarea = $('[name="Classic"]');
-  const highlights = $(".highlights");
-
-  // Listen for input in both textareas
-  unicodeTextarea.on("input", function () {
-    const text = $(this).val();
-    // Detect if input is Unicode or Bijoy
-    if (isBijoyText(text)) {
-      // Convert Bijoy to Unicode
-      convertBijoyToUnicode(text, e, classicTextarea);
-    } else {
-      // Convert Unicode to Bijoy
-      convertUnicodeToBijoy(text, e, classicTextarea);
-    }
-  });
-
-  classicTextarea.on("input", function () {
-    const text = $(this).val();
-    // Detect if input is Unicode or Bijoy
-    if (isBijoyText(text)) {
-      // Convert Bijoy to Unicode
-      convertBijoyToUnicode(text, e, unicodeTextarea);
-    } else {
-      // Convert Unicode to Bijoy
-      convertUnicodeToBijoy(text, e, unicodeTextarea);
-    }
-  });
-}
-
-// Helper function to detect if text is in Bijoy format
-function isBijoyText(text) {
-  // Check for common Bijoy characters/patterns
-  const bijoyPattern = /[\u0080-\u00FF]/;
-  return bijoyPattern.test(text);
-}
-
-// Existing conversion functions renamed for clarity
-function convertBijoyToUnicode(text, mappings, targetTextarea) {
-  const t = targetTextarea,
+  const t = $('[name="Unicode"]'),
     n = $('[name="Classic"]'),
     a = $(".highlights");
   n.focus();
@@ -72,7 +33,7 @@ function convertBijoyToUnicode(text, mappings, targetTextarea) {
     (english = []),
       new Promise((t) => {
         if (value) {
-          var l = mappings[0][1];
+          var l = e[0][1];
           for (var n of l)
             (value = value.replaceAll(n.out, n.seq)),
               n == l[l.length - 1] && t(value);
@@ -83,9 +44,9 @@ function convertBijoyToUnicode(text, mappings, targetTextarea) {
             new Promise((n) => {
               var a = "";
               for (l of t) {
-                var r = transform(!1, l, mappings[0][0]);
+                var r = transform(!1, l, e[0][0]);
                 if (r) {
-                  var i = transform(parseInt(r[0]), !1, mappings[1][0]),
+                  var i = transform(parseInt(r[0]), !1, e[1][0]),
                     o = "";
                   if (i) o = r[3] ? i[2] : i[1];
                   else {
@@ -222,7 +183,7 @@ function convertBijoyToUnicode(text, mappings, targetTextarea) {
         )
         .then(() => {
           if (s.length >= 2) {
-            let l = mappings[1][1];
+            let l = e[1][1];
             for (var t of ((s = s.replaceAll("y&i", "&iy")), l))
               s = s.replaceAll(t.seq, t.out);
             for (var t of [
@@ -245,7 +206,7 @@ function convertBijoyToUnicode(text, mappings, targetTextarea) {
     var a = "";
     new Promise((t) => {
       if (value) {
-        let n = mappings[1][1];
+        let n = e[1][1];
         for (var l of [
           { seq: "†", out: "‡" },
           { seq: "¡", out: "&e" },
@@ -261,9 +222,9 @@ function convertBijoyToUnicode(text, mappings, targetTextarea) {
         (t) =>
           new Promise((n) => {
             for (l of t) {
-              var o = transform(!1, l, mappings[1][0]);
+              var o = transform(!1, l, e[1][0]);
               if (o) {
-                var c = transform(parseInt(o[0]), !1, mappings[0][0]),
+                var c = transform(parseInt(o[0]), !1, e[0][0]),
                   g = (o[3] ? c[2] : c[1]) + s,
                   h = a[a.length - 1];
                 if ("্" != h)
@@ -360,7 +321,7 @@ function convertBijoyToUnicode(text, mappings, targetTextarea) {
                   v == d[d.length - 1] && (a += l);
                 }
               }
-              let p = mappings[0][1];
+              let p = e[0][1];
               (a = f(a, p)), l == t[t.length - 1] && n();
             }
           })
@@ -390,7 +351,7 @@ function convertBijoyToUnicode(text, mappings, targetTextarea) {
       c = l.shiftKey,
       g = l.ctrlKey,
       h = l.altKey,
-      d = transform(a, !1, mappings[0][0]);
+      d = transform(a, !1, e[0][0]);
     if (d) {
       if (g || h)
         console.warn("Externel..."),
@@ -460,7 +421,7 @@ function convertBijoyToUnicode(text, mappings, targetTextarea) {
           r &&
             n.length === r &&
             ((n = n.middleAdd(a + 1, i)), (r = 0), (s = "")),
-          (n = f(n, mappings[0][1], a)),
+          (n = f(n, e[0][1], a)),
           t.val(n),
           o && ((a += n.length - u), (t[0].selectionEnd = a));
       }
@@ -482,7 +443,7 @@ function convertBijoyToUnicode(text, mappings, targetTextarea) {
         o = l.shiftKey,
         g = l.ctrlKey,
         h = l.altKey,
-        d = transform(a, !1, mappings[1][0]),
+        d = transform(a, !1, e[1][0]),
         u = "";
       if (d)
         if (g || h)
@@ -510,7 +471,7 @@ function convertBijoyToUnicode(text, mappings, targetTextarea) {
           }
           let a = o ? d[2] : d[1];
           u = u.middleAdd(t, a);
-          var p = f(u, mappings[1][1], t);
+          var p = f(u, e[1][1], t);
           n.val(p), (n[0].selectionEnd = t - (u.length - p.length) + 1);
         }
       else
@@ -520,105 +481,25 @@ function convertBijoyToUnicode(text, mappings, targetTextarea) {
       clearTimeout(timer), (timer = setTimeout(c, 500));
     }),
     $("#copy1").click(() => {
-      // Get the classic text area content
-      const classicText = $("#01").val();
-
-      // Copy the text to clipboard
-      navigator.clipboard.writeText(classicText).then(() => {
-        $("#copy1").text("Copied!");
+      var e = $("#Classic2");
+      "none" == getComputedStyle(e[0]).display
+        ? copyClassic(n.val())
+        : copyClassic(e.html()),
+        n.focus(),
+        $("#copy1").text("Copied!"),
         setTimeout(() => {
           $("#copy1").text("Copy");
-        }, 1000);
-      });
+        }, 1e3);
+    }),
+    $("#copy2").click(() => {
+      navigator.clipboard.writeText(t.val()),
+        t.focus(),
+        $("#copy2").text("Copied!"),
+        setTimeout(() => {
+          $("#copy2").text("Copy");
+        }, 1e3);
     });
-
-  $("#copy2").click(() => {
-    // Get the unicode text area content
-    const unicodeText = $("#02").val();
-
-    // Copy the text to clipboard
-    navigator.clipboard.writeText(unicodeText).then(() => {
-      $("#copy2").text("Copied!");
-      setTimeout(() => {
-        $("#copy2").text("Copy");
-      }, 1000);
-    });
-  });
 }
-
-function convertUnicodeToBijoy(text, mappings, targetTextarea) {
-  const t = targetTextarea,
-    n = $('[name="Classic"]'),
-    a = $(".highlights");
-
-  let value = text;
-  let bijoyText = "";
-
-  // Convert Unicode numbers to Bijoy
-  const numberMap = {
-    "০": "0",
-    "১": "1",
-    "২": "2",
-    "৩": "3",
-    "৪": "4",
-    "৫": "5",
-    "৬": "6",
-    "৭": "7",
-    "৮": "8",
-    "৯": "9",
-  };
-
-  // First convert numbers
-  for (let unicode in numberMap) {
-    value = value.replaceAll(unicode, numberMap[unicode]);
-  }
-
-  // Convert Unicode to Bijoy using mappings
-  new Promise((resolve) => {
-    if (value) {
-      // Apply special character mappings first
-      const specialMappings = [
-        { out: "‡", seq: "†" },
-        { out: "&e", seq: "¡" },
-        { out: "m&K&i", seq: "¯Œ" },
-      ];
-
-      for (let mapping of specialMappings) {
-        value = value.replaceAll(mapping.out, mapping.seq);
-      }
-
-      // Apply main character mappings
-      let mainMappings = mappings[1][1];
-      for (let mapping of mainMappings) {
-        value = value.replaceAll(mapping.out, mapping.seq);
-      }
-
-      bijoyText = value;
-      resolve(bijoyText);
-    }
-  })
-    .then((result) => {
-      // Update the target textarea with converted text
-      t.val(result);
-
-      // Update highlights if needed
-      if (a.length) {
-        a.html(result);
-      }
-    })
-    .catch((error) => {
-      console.error("Error converting Unicode to Bijoy:", error);
-    });
-
-  // Add event listeners for input changes
-  t.on("input", function () {
-    const text = $(this).val();
-    if (!isBijoyText(text)) {
-      convertUnicodeToBijoy(text, mappings, t);
-    }
-  });
-}
-
 function transform(e = !1, t = !1, l) {
   var n = e ? "keycode" : "nrml_txt";
   if (t)
@@ -647,3 +528,21 @@ function copyClassic(e) {
     }),
   ]);
 }
+//prevent spy copy site
+document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+function ctrlShiftKey(e, keyCode) {
+  return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+}
+
+document.onkeydown = (e) => {
+  // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
+  if (
+    e.keyCode === 123 ||
+    ctrlShiftKey(e, "I") ||
+    ctrlShiftKey(e, "J") ||
+    ctrlShiftKey(e, "C") ||
+    (e.ctrlKey && e.keyCode === "U".charCodeAt(0))
+  )
+    return false;
+};
