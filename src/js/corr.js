@@ -1,5 +1,5 @@
 let dics;
-fetch("./dics.json")
+fetch("src/data/dics.json")
   .then((e) => e.json())
   .then((e) => {
     dics = e;
