@@ -30,11 +30,11 @@ a,a:active{
 }
 @font-face{
     font-family:sutonny;
-    src:url('sutonny.ttf')
+    src:url('../../assets/fonts/sutonny.ttf');
 }
 @font-face{
     font-family:sutonnyOmj;
-    src:url('SutonnyOmj')
+    src:url('../../assets/fonts/SutonnyOmj.ttf');
 }
 *,::after,::before{
     margin:0;
@@ -233,4 +233,3 @@ a{
 a:active{
     color:#2d369c
 }
- 
