@@ -210,7 +210,7 @@ div.copy{
     font-family:Mulish,sans-serif
 }
 div#ClassicBar{
-    transition:.2s
+    transition:.2s;
 }
 div#UnicodeBar{
     justify-content:space-between
