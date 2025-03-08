@@ -13,7 +13,7 @@
       "string" == typeof t ? t.replace(/\$/g, "$$$$") : t
     );
   }),
-  fetch("./key.json")
+  fetch("src/data/key.json")
     .then((e) => e.json())
     .then((e) => {
       asyncCall(e);
